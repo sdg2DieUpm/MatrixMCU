@@ -70,7 +70,7 @@ build/
 
 # Drivers' documentation and legacy code
 docs/
-Legacy/
+# Legacy/
 *.html
 _htmresc/
 Examples/
