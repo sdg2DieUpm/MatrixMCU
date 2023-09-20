@@ -4,3 +4,6 @@
 [submodule "projects/project_template"]
 	path = projects/project_template
 	url = https://github.com/sdg2DieUpm/c_cross_template.git
+[submodule "lib/fsm"]
+	path = lib/fsm
+	url = https://github.com/sdg2DieUpm/fsm.git
