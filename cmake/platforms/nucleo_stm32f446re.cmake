@@ -7,7 +7,7 @@ SET(CMAKE_TOOLCHAIN_FILE "${WORKSPACE_ROOT_DIR}/cmake/toolchains/arm-none-eabi-g
 FIND_PACKAGE("STM32F4xx" REQUIRED)
 
 # Compiler flags
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -DUSE_HAL_DRIVER -DSTM32F446xx -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_HAL_DRIVER -DSTM32F446xx -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard")
 SET(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard")
 
 # Linker flags
@@ -20,10 +20,10 @@ SET(PLATFORM_LINKER_FLAGS
     -specs=nano.specs
     -lc
     -lm
-    -lnosys 
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map,--cref
     -Wl,--gc-sections
     -Wl,--print-memory-usage
+    -Wl,--no-warn-rwx-segment
 )
 
 # Binary file extension
