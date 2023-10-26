@@ -1,7 +1,7 @@
 # Path to drivers directory
 IF(NOT WORKSPACE_ROOT_DIR)
     MESSAGE(WARNING "WORKSPACE_ROOT_DIR not defined. Using default value: ${CMAKE_CURRENT_SOURCE_DIR}")
-    SET(WORKSPACE_ROOT_DIR  ${CMAKE_CURRENT_SOURCE_DIR})
+    SET(WORKSPACE_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 ENDIF()
 
 # Add the Modules folder to the search path for FindXXX.cmake files
@@ -22,6 +22,14 @@ IF(NOT PLATFORM_SOURCES STREQUAL "")
     TARGET_INCLUDE_DIRECTORIES(platform PUBLIC ${PLATFORM_INCLUDE_DIRS})
     # Link library to all targets
     LINK_LIBRARIES(platform)
+ENDIF()
+IF(USE_HAL)
+    IF(NOT PLATFORM_HAL_SOURCES STREQUAL "")
+        ADD_LIBRARY(hal STATIC ${PLATFORM_HAL_SOURCES})
+        TARGET_INCLUDE_DIRECTORIES(hal PUBLIC ${PLATFORM_HAL_INCLUDE_DIRS})
+        # Link library to all targets
+        LINK_LIBRARIES(hal)
+    ENDIF()
 ENDIF()
 
 # Add platform-specific linker flags
