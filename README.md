@@ -10,7 +10,7 @@ For Windows users, check the SDG2 course guide.
 
 1. Clone this repository and move to the `workspace` directory:
 ```bash
-git clone https://github.com/sdg2DieUpm/workspace.git && mv workspace
+git clone https://github.com/sdg2DieUpm/workspace.git && cd workspace
 ```
 2. Update git submodules to download all the dependencies:
 ```bash
