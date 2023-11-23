@@ -14,7 +14,12 @@ IF (NOT PLATFORM)
 ENDIF()
 
 # Load platform-specific setup configuration
-INCLUDE(${WORKSPACE_ROOT_DIR}/cmake/platforms/${PLATFORM}.cmake)
+STRING(FIND ${PLATFORM} "stm32f4" PLATFORM_START)
+IF(PLATFORM_START EQUAL 0)
+    INCLUDE(${WORKSPACE_ROOT_DIR}/cmake/platforms/stm32f4xx.cmake)
+else()
+    INCLUDE(${WORKSPACE_ROOT_DIR}/cmake/platforms/${PLATFORM}.cmake)
+endif()
 
 # Pack platform-related code as a library
 IF(NOT PLATFORM_SOURCES STREQUAL "")

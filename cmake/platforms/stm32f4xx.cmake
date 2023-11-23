@@ -1,4 +1,58 @@
-# SETUP FOR STM32F446RETx BOARDS
+# SETUP FOR STM32F4xx BOARDS
+message("Setting up for STM32F4xx boards")
+
+# Extract micro model
+string(REGEX MATCH "stm32f4([0-9]+)" _ ${PLATFORM})
+set(MICRO_MODEL ${CMAKE_MATCH_1})
+
+# Extract number of pins
+string(REGEX MATCH "stm32f4[0-9]+([a-z])" _ ${PLATFORM})
+set(NUM_PINS ${CMAKE_MATCH_1})
+
+# Extract size of memory
+string(REGEX MATCH "stm32f4[0-9]+[a-z]([a-z])" _ ${PLATFORM})
+set(MEM_SIZE ${CMAKE_MATCH_1})
+
+# Print the extracted values
+message("    Micro model: ${MICRO_MODEL}")
+message("    Number of pins: ${NUM_PINS}")
+message("    Memory size: ${MEM_SIZE}")
+
+# Map MICRO_MODEL to the correct platform definition
+if(MICRO_MODEL STREQUAL "01")
+    if(MEM_SIZE STREQUAL "b" OR MEM_SIZE STREQUAL "c")
+        set(PLATFORM_DEFINE "STM32F401xC")
+    else()
+        set(PLATFORM_DEFINE "STM32F401xE")
+    endif()
+elseif(MICRO_MODEL STREQUAL "10")
+    if(NUM_PINS STREQUAL "t")
+        set(PLATFORM_DEFINE "STM32F410Tx")
+    elseif(NUM_PINS STREQUAL "c")
+        set(PLATFORM_DEFINE "STM32F410Cx")
+    else()
+        set(PLATFORM_DEFINE "STM32F410Rx")
+    endif()
+elseif(MICRO_MODEL STREQUAL "11")
+    set(PLATFORM_DEFINE "STM32F411xE")
+elseif(MICRO_MODEL STREQUAL "12")
+    if(NUM_PINS STREQUAL "c")
+        set(PLATFORM_DEFINE "STM32F412Cx")
+    elseif(NUM_PINS STREQUAL "z")
+        set(PLATFORM_DEFINE "STM32F412Zx")
+    elseif(NUM_PINS STREQUAL "v")
+        set(PLATFORM_DEFINE "STM32F412Vx")
+    else()
+        set(PLATFORM_DEFINE "STM32F412Rx")
+    endif()
+else()
+    set(PLATFORM_DEFINE "STM32F4${MICRO_MODEL}xx")
+endif()
+message("    Platform define: ${PLATFORM_DEFINE}")
+
+# Linker file TODO MAKE IT MORE GENERIC!!
+SET(LINKER_FILE ${WORKSPACE_ROOT_DIR}/ld/STM32F4xxxEx.ld)
+MESSAGE("    Linker file: ${LINKER_FILE}")
 
 # Toolchain for ARM Cortex-M microcontrollers
 SET(CMAKE_TOOLCHAIN_FILE "${WORKSPACE_ROOT_DIR}/cmake/toolchains/arm-none-eabi-gcc.cmake")
