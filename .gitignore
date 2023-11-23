@@ -68,7 +68,7 @@ build/
 # Mac OS stuff
 .DS_Store
 
-# Drivers' documentation and legacy code
+# Drivers' documentation and examples
 docs/
 # Legacy/
 *.html
@@ -77,3 +77,6 @@ Examples/
 DSP_Lib_TestSuite/
 *.bat
 NN_Lib_Tests/
+
+# Projects
+projects/
