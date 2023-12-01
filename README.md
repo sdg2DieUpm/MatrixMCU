@@ -1,5 +1,9 @@
 # MatrixMCU: a toolkit for developing bare-metal embedded applications
 
+**MATRIXMCU** or **MatrixMCU** is the acronym for **Microcontroller Application Toolkit Redefining Integrated Xperience for MCUs**
+
+MatrixMCU is the name given to the set of tools and development environment (*toolkit*) for bare-metal programming on embedded devices with which we are going to work. This toolkit has been tested for the 3 most important operative systems and it is intended to be used with the VSCode editor. 
+
 ## Prerequisites
 
 You must install additional tools to make `MatrixMCU` work.
