@@ -1,11 +1,11 @@
 # Path to drivers directory
-IF(NOT WORKSPACE_ROOT_DIR)
-    MESSAGE(WARNING "WORKSPACE_ROOT_DIR not defined. Using default value: ${CMAKE_CURRENT_SOURCE_DIR}")
-    SET(WORKSPACE_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+IF(NOT MATRIXMCU)
+    MESSAGE(WARNING "MATRIXMCU not defined. Using default value: ${CMAKE_CURRENT_SOURCE_DIR}")
+    SET(MATRIXMCU ${CMAKE_CURRENT_SOURCE_DIR})
 ENDIF()
 
 # Add the Modules folder to the search path for FindXXX.cmake files
-SET(CMAKE_MODULE_PATH ${WORKSPACE_ROOT_DIR}/cmake/modules)
+SET(CMAKE_MODULE_PATH ${MATRIXMCU}/cmake/modules)
 
 # Parse target platform from command line. If not specified, default to native
 IF (NOT PLATFORM)
@@ -16,9 +16,9 @@ ENDIF()
 # Load platform-specific setup configuration
 STRING(FIND ${PLATFORM} "stm32f4" PLATFORM_START)
 IF(PLATFORM_START EQUAL 0)
-    INCLUDE(${WORKSPACE_ROOT_DIR}/cmake/platforms/stm32f4xx.cmake)
+    INCLUDE(${MATRIXMCU}/cmake/platforms/stm32f4xx.cmake)
 else()
-    INCLUDE(${WORKSPACE_ROOT_DIR}/cmake/platforms/${PLATFORM}.cmake)
+    INCLUDE(${MATRIXMCU}/cmake/platforms/${PLATFORM}.cmake)
 endif()
 
 # Pack platform-related code as a library
@@ -41,11 +41,11 @@ ENDIF()
 ADD_LINK_OPTIONS(${PLATFORM_LINKER_FLAGS})
 
 # Add third-party libraries. Note that each library must be added to each target manually
-FILE(GLOB libs RELATIVE ${WORKSPACE_ROOT_DIR}/lib ${WORKSPACE_ROOT_DIR}/lib/*)
+FILE(GLOB libs RELATIVE ${MATRIXMCU}/lib ${MATRIXMCU}/lib/*)
 FOREACH(lib ${libs})
-    IF(IS_DIRECTORY ${WORKSPACE_ROOT_DIR}/lib/${lib})
-        FILE(GLOB lib_src ${WORKSPACE_ROOT_DIR}/lib/${lib}/src/**.c)
+    IF(IS_DIRECTORY ${MATRIXMCU}/lib/${lib})
+        FILE(GLOB lib_src ${MATRIXMCU}/lib/${lib}/src/**.c)
         ADD_LIBRARY(${lib} STATIC ${lib_src})
-        TARGET_INCLUDE_DIRECTORIES(${lib} PUBLIC ${WORKSPACE_ROOT_DIR}/lib/${lib}/include ${WORKSPACE_ROOT_DIR}/lib/${lib}/src)
+        TARGET_INCLUDE_DIRECTORIES(${lib} PUBLIC ${MATRIXMCU}/lib/${lib}/include ${MATRIXMCU}/lib/${lib}/src)
     ENDIF()
 ENDFOREACH()

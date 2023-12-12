@@ -51,11 +51,11 @@ endif()
 message("    Platform define: ${PLATFORM_DEFINE}")
 
 # Linker file TODO MAKE IT MORE GENERIC!!
-SET(LINKER_FILE ${WORKSPACE_ROOT_DIR}/ld/STM32F4xxxEx.ld)
+SET(LINKER_FILE ${MATRIXMCU}/ld/STM32F4xxxEx.ld)
 MESSAGE("    Linker file: ${LINKER_FILE}")
 
 # Toolchain for ARM Cortex-M microcontrollers
-SET(CMAKE_TOOLCHAIN_FILE "${WORKSPACE_ROOT_DIR}/cmake/toolchains/arm-none-eabi-gcc.cmake")
+SET(CMAKE_TOOLCHAIN_FILE "${MATRIXMCU}/cmake/toolchains/arm-none-eabi-gcc.cmake")
 
 # STM32 HAL and CMSIS
 FIND_PACKAGE("STM32F4xx" REQUIRED)
@@ -105,7 +105,7 @@ SET(PLATFORM_HAL_INCLUDE_DIRS ${STM32F4xx_HAL_INCLUDE_DIRS})
 # OpenOCD support (only if OpenOCD is found)
 FIND_PACKAGE(OpenOCD)
 IF(OpenOCD_FOUND)
-    SET(OPENOCD_CONFIG_FILE ${WORKSPACE_ROOT_DIR}/openocd/stm32f4x.cfg)
+    SET(OPENOCD_CONFIG_FILE ${MATRIXMCU}/openocd/stm32f4x.cfg)
     # TODO: erase hangs. Why?
     # ADD_CUSTOM_TARGET(erase COMMAND ${OPENOCD_EXECUTABLE} -f ${OPENOCD_CONFIG_FILE} -c "init; reset halt; stm32f4x mass_erase 0; exit")
 ENDIF()
