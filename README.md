@@ -12,15 +12,11 @@ For Windows users, check the SDG2 course guide.
 
 ## Setup
 
-1. Clone this repository and move to the `MatrixMCU` directory:
+1. Clone this repository **recursively** and move to the `MatrixMCU` directory:
 ```bash
-git clone https://github.com/sdg2DieUpm/MatrixMCU.git && cd MatrixMCU
+git clone --recursive https://github.com/sdg2DieUpm/MatrixMCU.git && cd MatrixMCU
 ```
-2. Update git submodules to download all the dependencies:
-```bash
-git submodule update --init --recursive
-```
-3. You can copy the `projects/project_template` as many times as you want to start new projects.
+2. You can copy the `projects/project_template` as many times as you want to start new projects.
 
 Make sure that, when using Visual Studio Code, **THE PROJECT FOLDER IS THE WORKSPACE**.
 Otherwise, VSCode won't be able to read the configurations and won't work.
