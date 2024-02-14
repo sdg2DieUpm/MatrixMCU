@@ -50,9 +50,13 @@ else()
 endif()
 message("    Platform define: ${PLATFORM_DEFINE}")
 
-# Linker file TODO MAKE IT MORE GENERIC!!
-SET(LINKER_FILE ${MATRIXMCU}/ld/STM32F4xxxEx.ld)
-MESSAGE("    Linker file: ${LINKER_FILE}")
+# Linker file TODO MAKE IT MORE PORTABLE!!
+SET(LINKER_FILE ${MATRIXMCU}/ld/${PLATFORM}.ld)
+IF(EXISTS ${LINKER_FILE})
+    MESSAGE("    Linker file: ${LINKER_FILE}")
+ELSE()
+    MESSAGE(FATAL_ERROR "Linker file does not exist for platform ${PLATFORM}")
+ENDIF()
 
 # Toolchain for ARM Cortex-M microcontrollers
 SET(CMAKE_TOOLCHAIN_FILE "${MATRIXMCU}/cmake/toolchains/arm-none-eabi-gcc.cmake")
