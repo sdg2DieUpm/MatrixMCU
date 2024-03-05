@@ -93,6 +93,24 @@ SET(PLATFORM_LINKER_FLAGS
     -Wl,--no-warn-rwx-segment
 )
 
+IF (USE_SEMIHOSTING)
+    SET(PLATFORM_LINKER_FLAGS
+        -mcpu=cortex-m4
+        -mthumb
+        -mfpu=fpv4-sp-d16
+        -mfloat-abi=hard
+        -T${LINKER_FILE}
+        -specs=rdimon.specs
+        -lc
+        -lrdimon
+        -lm
+        -Wl,-Map=${CMAKE_PROJECT_NAME}.map,--cref
+        -Wl,--gc-sections
+        -Wl,--print-memory-usage
+        -Wl,--no-warn-rwx-segment
+    )
+ENDIF()
+
 # Binary file extension
 SET(PLATFORM_EXTENSION ".elf")
 
