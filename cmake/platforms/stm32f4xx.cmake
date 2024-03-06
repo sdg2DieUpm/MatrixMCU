@@ -84,7 +84,6 @@ SET(PLATFORM_LINKER_FLAGS
     -mfpu=fpv4-sp-d16
     -mfloat-abi=hard
     -T${LINKER_FILE}
-    -specs=nano.specs
     -lc
     -lm
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map,--cref
@@ -92,22 +91,16 @@ SET(PLATFORM_LINKER_FLAGS
     -Wl,--print-memory-usage
     -Wl,--no-warn-rwx-segment
 )
-
 IF (USE_SEMIHOSTING)
     SET(PLATFORM_LINKER_FLAGS
-        -mcpu=cortex-m4
-        -mthumb
-        -mfpu=fpv4-sp-d16
-        -mfloat-abi=hard
-        -T${LINKER_FILE}
+        ${PLATFORM_LINKER_FLAGS}
         -specs=rdimon.specs
-        -lc
         -lrdimon
-        -lm
-        -Wl,-Map=${CMAKE_PROJECT_NAME}.map,--cref
-        -Wl,--gc-sections
-        -Wl,--print-memory-usage
-        -Wl,--no-warn-rwx-segment
+    )
+ELSE()
+    SET(PLATFORM_LINKER_FLAGS
+        ${PLATFORM_LINKER_FLAGS}
+        -specs=nano.specs
     )
 ENDIF()
 
@@ -130,4 +123,20 @@ IF(OpenOCD_FOUND)
     SET(OPENOCD_CONFIG_FILE ${MATRIXMCU}/openocd/stm32f4x.cfg)
     # TODO: erase hangs. Why?
     # ADD_CUSTOM_TARGET(erase COMMAND ${OPENOCD_EXECUTABLE} -f ${OPENOCD_CONFIG_FILE} -c "init; reset halt; stm32f4x mass_erase 0; exit")
+ENDIF()
+
+# QEMU support (only if QEMU is found)
+FIND_PACKAGE(QemuSystemArm)
+IF(QemuSystemArm_FOUND)
+    SET(QEMU_FLAGS
+        -cpu cortex-m4
+        -machine netduinoplus2
+        -nographic
+    )
+    IF(USE_SEMIHOSTING)
+        SET(QEMU_FLAGS
+            ${QEMU_FLAGS}
+            -semihosting-config enable=on,target=native
+        )
+    ENDIF()
 ENDIF()
