@@ -10,14 +10,12 @@ endif()
 
 set(TOOLCHAIN_PREFIX arm-none-eabi-)
 
+
 execute_process(
   COMMAND ${UTIL_SEARCH_CMD} ${TOOLCHAIN_PREFIX}gcc
   OUTPUT_VARIABLE BINUTILS_PATH
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-if(NOT BINUTILS_PATH)
-  message(FATAL_ERROR "ARM toolchain not found in PATH. Please install ARM toolchain and/or add it to PATH.")
-endif()
 
 get_filename_component(ARM_TOOLCHAIN_DIR ${BINUTILS_PATH} DIRECTORY)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)

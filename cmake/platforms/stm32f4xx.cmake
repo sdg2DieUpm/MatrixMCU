@@ -91,6 +91,7 @@ SET(PLATFORM_LINKER_FLAGS
     -mfpu=fpv4-sp-d16
     -mfloat-abi=hard
     -T${LINKER_FILE}
+    -specs=nano.specs
     -lc
     -lm
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map,--cref
@@ -148,10 +149,7 @@ FIND_PACKAGE(OpenOCD)
 IF(OpenOCD_FOUND)
     SET(OPENOCD_CONFIG_FILE ${MATRIXMCU}/openocd/stm32f4x.cfg)
     # TODO: erase hangs. Why?
-    ADD_CUSTOM_TARGET(erase 
-        COMMAND ${OPENOCD_EXECUTABLE} -f ${OPENOCD_CONFIG_FILE} -c "init; reset init; stm32f4x mass_erase 0; exit"
-        COMMENT "Erasing flash memory"
-    )
+    # ADD_CUSTOM_TARGET(erase COMMAND ${OPENOCD_EXECUTABLE} -f ${OPENOCD_CONFIG_FILE} -c "init; reset halt; stm32f4x mass_erase 0; exit")
 ENDIF()
 
 # QEMU support (only if QEMU is found)

@@ -1,6 +1,0 @@
-# Find QEMU System ARM CLI executable
-
-FIND_PROGRAM(QEMU_EXECUTABLE qemu-system-arm)
-
-FIND_PACKAGE(PackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(QemuSystemArm DEFAULT_MSG QEMU_EXECUTABLE)
