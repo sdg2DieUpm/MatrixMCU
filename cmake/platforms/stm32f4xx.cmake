@@ -50,13 +50,9 @@ else()
 endif()
 message("    Platform define: ${PLATFORM_DEFINE}")
 
-# Linker file TODO MAKE IT MORE PORTABLE!!
-SET(LINKER_FILE ${MATRIXMCU}/ld/${PLATFORM}.ld)
-IF(EXISTS ${LINKER_FILE})
-    MESSAGE("    Linker file: ${LINKER_FILE}")
-ELSE()
-    MESSAGE(FATAL_ERROR "Linker file does not exist for platform ${PLATFORM}")
-ENDIF()
+# Linker file TODO MAKE IT MORE GENERIC!!
+SET(LINKER_FILE ${MATRIXMCU}/ld/STM32F4xxxEx.ld)
+MESSAGE("    Linker file: ${LINKER_FILE}")
 
 # Toolchain for ARM Cortex-M microcontrollers
 SET(CMAKE_TOOLCHAIN_FILE "${MATRIXMCU}/cmake/toolchains/arm-none-eabi-gcc.cmake")
@@ -84,6 +80,7 @@ SET(PLATFORM_LINKER_FLAGS
     -mfpu=fpv4-sp-d16
     -mfloat-abi=hard
     -T${LINKER_FILE}
+    -specs=nano.specs
     -lc
     -lm
     -Wl,-Map=${CMAKE_PROJECT_NAME}.map,--cref
@@ -91,18 +88,6 @@ SET(PLATFORM_LINKER_FLAGS
     -Wl,--print-memory-usage
     -Wl,--no-warn-rwx-segment
 )
-IF (USE_SEMIHOSTING)
-    SET(PLATFORM_LINKER_FLAGS
-        ${PLATFORM_LINKER_FLAGS}
-        -specs=rdimon.specs
-        -lrdimon
-    )
-ELSE()
-    SET(PLATFORM_LINKER_FLAGS
-        ${PLATFORM_LINKER_FLAGS}
-        -specs=nano.specs
-    )
-ENDIF()
 
 # Binary file extension
 SET(PLATFORM_EXTENSION ".elf")
@@ -123,20 +108,4 @@ IF(OpenOCD_FOUND)
     SET(OPENOCD_CONFIG_FILE ${MATRIXMCU}/openocd/stm32f4x.cfg)
     # TODO: erase hangs. Why?
     # ADD_CUSTOM_TARGET(erase COMMAND ${OPENOCD_EXECUTABLE} -f ${OPENOCD_CONFIG_FILE} -c "init; reset halt; stm32f4x mass_erase 0; exit")
-ENDIF()
-
-# QEMU support (only if QEMU is found)
-FIND_PACKAGE(QemuSystemArm)
-IF(QemuSystemArm_FOUND)
-    SET(QEMU_FLAGS
-        -cpu cortex-m4
-        -machine netduinoplus2
-        -nographic
-    )
-    IF(USE_SEMIHOSTING)
-        SET(QEMU_FLAGS
-            ${QEMU_FLAGS}
-            -semihosting-config enable=on,target=native
-        )
-    ENDIF()
 ENDIF()
