@@ -1,17 +1,15 @@
 # Path to drivers directory
-IF(NOT MATRIXMCU)
-    MESSAGE(WARNING "MATRIXMCU not defined. Using default value: ${CMAKE_CURRENT_SOURCE_DIR}")
+IF(NOT DEFINED MATRIXMCU)
     SET(MATRIXMCU ${CMAKE_CURRENT_SOURCE_DIR})
+    MESSAGE(STATUS "No path to MatrixMCU directory selected, using default (${MATRIXMCU}). You can override it by passing -DMATRIXMCU=<MATRIXMCU> to cmake")
+ENDIF()
+# Parse target platform from command line. If not specified, raise error
+IF(NOT DEFINED PLATFORM)
+    MESSAGE(FATAL_ERROR "No platform selected. You can provide one by passing -DPLATFORM=<platform> to cmake")
 ENDIF()
 
 # Add the Modules folder to the search path for FindXXX.cmake files
 SET(CMAKE_MODULE_PATH ${MATRIXMCU}/cmake/modules)
-
-# Parse target platform from command line. If not specified, default to native
-IF (NOT PLATFORM)
-    MESSAGE(WARNING "PLATFORM not defined. Using default value: native")
-    SET(PLATFORM "native")
-ENDIF()
 
 # Load platform-specific setup configuration
 STRING(FIND ${PLATFORM} "stm32f4" PLATFORM_START)
@@ -20,22 +18,6 @@ IF(PLATFORM_START EQUAL 0)
 else()
     INCLUDE(${MATRIXMCU}/cmake/platforms/${PLATFORM}.cmake)
 endif()
-
-# Pack platform-related code as a library
-IF(NOT PLATFORM_SOURCES STREQUAL "")
-    ADD_LIBRARY(platform STATIC ${PLATFORM_SOURCES})
-    TARGET_INCLUDE_DIRECTORIES(platform PUBLIC ${PLATFORM_INCLUDE_DIRS})
-    # Link library to all targets
-    LINK_LIBRARIES(platform)
-ENDIF()
-IF(USE_HAL)
-    IF(NOT PLATFORM_HAL_SOURCES STREQUAL "")
-        ADD_LIBRARY(hal STATIC ${PLATFORM_HAL_SOURCES})
-        TARGET_INCLUDE_DIRECTORIES(hal PUBLIC ${PLATFORM_HAL_INCLUDE_DIRS})
-        # Link library to all targets
-        LINK_LIBRARIES(hal)
-    ENDIF()
-ENDIF()
 
 # Add platform-specific linker flags
 ADD_LINK_OPTIONS(${PLATFORM_LINKER_FLAGS})
