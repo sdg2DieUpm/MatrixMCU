@@ -7,3 +7,6 @@
 [submodule "lib/fsm"]
 	path = lib/fsm
 	url = https://github.com/sdg2DieUpm/fsm.git
+[submodule "install"]
+	path = install
+	url = https://github.com/sdg2DieUpm/install-MatrixMCU.git
