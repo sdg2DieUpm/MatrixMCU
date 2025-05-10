@@ -16,6 +16,8 @@ FILE(GLOB STM32F4xx_CMSIS_SOURCES
 )
 
 FILE(GLOB STM32F4xx_HAL_SOURCES
+    ${STM32F4xx_DRIVERS_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c
+    ${STM32F4xx_DRIVERS_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c
     ${STM32F4xx_DRIVERS_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
     ${STM32F4xx_DRIVERS_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
     ${STM32F4xx_DRIVERS_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c
